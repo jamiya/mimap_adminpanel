@@ -43,7 +43,7 @@ class SecurityPlugin extends Plugin
 
 			//Private area resources
 			$privateResources = array(
-                                'cmcategory'   => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
+                'cmcategory'   => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'companies'    => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'products'     => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
@@ -55,7 +55,7 @@ class SecurityPlugin extends Plugin
 
 			//Public area resources
 			$publicResources = array(
-                                'cmcategory'   => array('index', 'jsonlist', 'json','tree', 'search', 'new', 'edit', 'save', 'create', 'delete'),
+                'cmcategory'   => array('index', 'jsonlist', 'json','tree', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'index'      => array('index'),
 				'about'      => array('index'),
 				'register'   => array('index'),

@@ -27,11 +27,11 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="btn-group">
-											<button id="sample_editable_1_new" class="btn green">
-											Нэмэх <i class="fa fa-plus"></i>
-											</button>
-                                                                                        <button id="sample_editable_1_new" class="btn blue">
-											Харах <i class="fa fa-eye"></i>
+											<a id="sample_editable_1_new" class="btn green" data-toggle="modal" href="#basic">
+											<i class="fa fa-plus"></i> Нэмэх
+											</a>
+                                            <button id="sample_editable_1_new" class="btn blue">
+											<i class="fa fa-eye"></i> Харах
 											</button>
 										</div>
 									</div>
@@ -88,6 +88,8 @@
 				</div>
 			</div>
 			<!-- END PAGE CONTENT -->
+{% include 'cmcategory/add.volt'%}
+
 {% endblock %} 
 
 {% block js %}

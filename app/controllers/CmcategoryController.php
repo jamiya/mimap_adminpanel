@@ -14,6 +14,11 @@ class CmcategoryController extends ControllerBase
         $this->view->categories = $this->service->get('/mimap/category/categories');
 
     }
+
+    public function addAction()
+    {
+        
+    }
     
     public function jsonListAction(){
         

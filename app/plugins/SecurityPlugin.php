@@ -9,7 +9,7 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 
 /**
- * SecurityPlugin
+ * SecurityPlugin       
  *
  * This is the security plugin which controls that users only have access to the modules they're assigned to
  */

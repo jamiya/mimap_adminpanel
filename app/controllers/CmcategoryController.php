@@ -24,8 +24,51 @@ class CmcategoryController extends ControllerBase
       return  $this->response->setContent(json_encode($this->service->get('/mimap/category/categories')));  
         
     }
+    
+    
+    public function addAction(){
+        
+        
+         if ($this->request->isPost()) {
 
-        public function treeAction()
+            $categoryName = trim($this->request->getPost('categoryName', array('string', 'striptags')));
+            $parentId = $this->request->getPost('parentId', 'num');
+            $isShowMenu = $this->request->getPost('isShowMenu', 'bool');
+
+            $categories = $this->service->get('/mimap/category/categories');
+            
+            foreach ($category as $categories){
+                
+                if(strcasecmp($categoryName,  trim($category['categoryName']))==0){
+                    $this->flash->error('Ийм нэртэй категори байна');
+                    return false;
+                }
+              
+            }
+           
+            $cmCategory = new CmCategory();
+            
+            $cmCategory->setCategoryName($categoryName);
+            $cmCategory->setParentId($parentId);
+            $cmCategory->setIsActive(1);
+            $cmCategory->setIsShowMenu($isShowMenu);
+
+            if ($user->save() == false) {
+                              
+                foreach ($user->getMessages() as $message) {
+                    $this->flash->error((string) $message);
+                }
+            } else {
+                $this->flash->success('Thanks for sign-up, please log-in to start generating invoices');
+                return $this->forward('session/index');
+            }
+        }
+        
+    }
+
+
+
+    public function treeAction()
     { 
 
                  

@@ -15,10 +15,20 @@ class CmcategoryController extends ControllerBase
 
     }
     
-    public function treeAction()
-    {
+    public function jsonListAction(){
+        
+       $this->view->disable();
        
-       
+       $this->response->setContentType('application/json', 'UTF-8');
+             
+      return  $this->response->setContent(json_encode($this->service->get('/mimap/category/categories')));  
+        
+    }
+
+        public function treeAction()
+    { 
+
+                 
     }
     
     public function jsonAction()

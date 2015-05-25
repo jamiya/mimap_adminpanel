@@ -884,6 +884,12 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->javascriptInclude('assets/admin/pages/scripts/tasks.js'); ?>
 
 
+   <script>
+        jQuery(document).ready(function() {    
+        Metronic.init(); // init metronic core components
+        Layout.init(); // init current layout
+        });
+    </script>
 
 
 </body>

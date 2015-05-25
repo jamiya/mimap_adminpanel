@@ -142,7 +142,7 @@ var TableAdvanced = function () {
                 [5, 15, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 10,
+            "pageLength": -1,
 
             "dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
 
@@ -179,7 +179,9 @@ var TableAdvanced = function () {
    
   $('#table_1').treegrid({
        treeColumn: 1,
-      'initialState': 'collapsed'
+      'initialState': 'collapsed',
+       expanderExpandedClass: 'fa fa-minus-square-o',
+       expanderCollapsedClass: 'fa fa-plus-square-o'
    });
       
    TableAdvanced.init();

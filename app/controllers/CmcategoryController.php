@@ -20,8 +20,12 @@ class CmcategoryController extends ControllerBase
        $this->view->disable();
        
        $this->response->setContentType('application/json', 'UTF-8');
+       
+       $categories = $this->service->get('/mimap/category/categories');
+       
+       $treeList = $this->tree($categories, array(), null, '');
              
-      return  $this->response->setContent(json_encode($this->service->get('/mimap/category/categories')));  
+      return  $this->response->setContent(json_encode($treeList));  
         
     }
     
@@ -53,7 +57,7 @@ class CmcategoryController extends ControllerBase
             $cmCategory->setIsActive(1);
             $cmCategory->setIsShowMenu($isShowMenu);
 
-            if ($user->save() == false) {
+            if ($cmCategory->save() == false) {
                               
                 foreach ($user->getMessages() as $message) {
                     $this->flash->error((string) $message);
@@ -99,6 +103,30 @@ class CmcategoryController extends ControllerBase
              
       return  $this->response->setContent(json_encode($records));
        
+    }
+    
+    private function tree($categories,$categoriesTree,$parentId,$prefix){
+       
+        foreach ($categories as $category) {
+            if($category['parentId']['categoryId']==$parentId){
+                $category['categoryName'] = $prefix.$category['categoryName'];
+                array_push($categoriesTree,$category);
+                if($this->isParent($category['categoryId'],$categories)){
+                  $categoriesTree = $this->tree($categories, $categoriesTree, $category['categoryId'],$prefix.' ');
+                }
+            }
+        }        
+        return $categoriesTree; 
+    }
+    
+    
+    private function isParent($id,$categories){
+        foreach ($categories as $category){
+          if($category['parentId']['categoryId']==$id){
+              return true;
+         }
+        }
+        return false;
     }
     
     

@@ -10,8 +10,8 @@ class CmcategoryController extends ControllerBase
 
     public function indexAction()
     {
-       
-        $this->view->categories = $this->service->get('/mimap/category/categories');
+        $result = $this->service->get('/mimap/cats/categories');
+        $this->view->categories = $result['data'];
 
     }
     
@@ -21,9 +21,9 @@ class CmcategoryController extends ControllerBase
        
        $this->response->setContentType('application/json', 'UTF-8');
        
-       $categories = $this->service->get('/mimap/category/categories');
+       $categories = $this->service->get('/mimap/cats/categories');
        
-       $treeList = $this->tree($categories, array(), null, '');
+       $treeList = $this->tree($categories['data'], array(), null, '');
              
       return  $this->response->setContent(json_encode($treeList));  
         
@@ -44,11 +44,13 @@ class CmcategoryController extends ControllerBase
 
             $parentId = $this->request->getPost('parentId');
             
+           // return $this->response->setContent($parentId);
+            
             $isShowMenu = $this->request->getPost('isShowMenu');
                         
-            $categories = $this->service->get('/mimap/category/categories');
+            $categories = $this->service->get('/mimap/cats/categories');
                         
-            foreach ($category as $categories){
+            foreach ($category as $categories['data']){
                 
                 if(strcasecmp($categoryName,  trim($category['categoryName']))==0){
                     
@@ -60,7 +62,7 @@ class CmcategoryController extends ControllerBase
             $cmCategory = new CmCategory();
             $cmCategory->setCategoryId("1000".time());
             $cmCategory->setCategoryName($categoryName);
-            $cmCategory->setParentId(null);
+            $cmCategory->setParentId($parentId);
             $cmCategory->setIsActive(true);
             $cmCategory->setIsShowMenu($isShowMenu);
             
@@ -130,7 +132,7 @@ class CmcategoryController extends ControllerBase
                 $category['categoryName'] = $prefix.$category['categoryName'];
                 array_push($categoriesTree,$category);
                 if($this->isParent($category['categoryId'],$categories)){
-                  $categoriesTree = $this->tree($categories, $categoriesTree, $category['categoryId'],$prefix."-");
+                  $categoriesTree = $this->tree($categories, $categoriesTree, $category['categoryId'],$prefix."--");
                 }
             }
         }        

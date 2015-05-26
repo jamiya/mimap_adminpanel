@@ -55,6 +55,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css'); ?>
 <?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css'); ?>
 <?php echo $this->tag->stylesheetLink('assets/global/plugins/maxazan-jquery-treegrid/css/jquery.treegrid.css'); ?>
+<?php echo $this->tag->stylesheetLink('assets/global/plugins/bootstrap-select/bootstrap-select.min.css'); ?>
+<?php echo $this->tag->stylesheetLink('assets/global/plugins/jquery-multi-select/css/multi-select.css'); ?>
 <!-- END PAGE LEVEL STYLES -->
 
 
@@ -939,15 +941,14 @@ License: You must have a valid license purchased only from themeforest(the above
 									<input type="text" id="categoryInput" class="form-control input-circle-right" placeholder=" Категори">
 										</div>
 									</div>
-									<div class="form-group">
-										<label>Харъяалагдах категори</label>
-										<select class="form-control" id="correspondentCategory">
-											<option value="parentId">Option 1</option>
-											<option>Option 2</option>
-											<option>Option 3</option>
-											<option>Option 4</option>
-											<option>Option 5</option>
-										</select>
+									<div class="form-group" id="correspondentList">
+										<label class=>Харъяалагдах категори</label>
+										<div>
+											<select class="form-control select2me" id="correspondentCategory" data-placeholder="Сонгох...">
+												
+											</select>
+											
+										</div>
 									</div>
 									<div class="form-group">
 										<div class="checkbox-list">
@@ -1016,8 +1017,11 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->javascriptInclude('assets/admin/pages/scripts/tasks.js'); ?>
 
 
-    
+
+<?php echo $this->tag->javascriptInclude('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js'); ?>
+<?php echo $this->tag->javascriptInclude('assets/global/plugins/bootstrap-select/bootstrap-select.min.js'); ?>    
 <?php echo $this->tag->javascriptInclude('assets/global/plugins/select2/select2.min.js'); ?>
+<?php echo $this->tag->javascriptInclude('assets/admin/pages/scripts/components-dropdowns.js'); ?>
 <?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/media/js/jquery.dataTables.min.js'); ?>
 <?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js'); ?>
 <?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js'); ?>
@@ -1121,9 +1125,27 @@ var TableAdvanced = function () {
    });
       
    TableAdvanced.init();
-   
 
-         
+	$.ajax({
+      url: 'cmcategory/jsonlist',
+      data: {
+         format: 'json'
+      },
+      type: 'GET',
+      error: function() {
+         $('#correspondentList').html('<p>An error has occurred</p>');
+      },
+      success: function(data) {
+      	//var lists = JSON.parse(data);
+		var $selectElement = $("#correspondentCategory");								
+        
+        $(data).each(function(){
+    	var newOption = '<option value="' + this.categoryId + '">' + this.categoryName + '</option>';
+    	$selectElement.append(newOption);
+		});
+      }
+      
+   });   
 });
 </script>
 <!-- END JAVASCRIPTS -->

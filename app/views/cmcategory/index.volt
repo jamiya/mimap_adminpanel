@@ -7,6 +7,8 @@
 {{ stylesheet_link('assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css') }}
 {{ stylesheet_link('assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css') }}
 {{ stylesheet_link('assets/global/plugins/maxazan-jquery-treegrid/css/jquery.treegrid.css') }}
+{{ stylesheet_link('assets/global/plugins/bootstrap-select/bootstrap-select.min.css') }}
+{{ stylesheet_link('assets/global/plugins/jquery-multi-select/css/multi-select.css') }}
 <!-- END PAGE LEVEL STYLES -->
 {% endblock %}
 
@@ -93,8 +95,11 @@
 {% endblock %} 
 
 {% block js %}
-    
+
+{{ javascript_include('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js')}}
+{{ javascript_include('assets/global/plugins/bootstrap-select/bootstrap-select.min.js')}}    
 {{ javascript_include('assets/global/plugins/select2/select2.min.js') }}
+{{ javascript_include('assets/admin/pages/scripts/components-dropdowns.js') }}
 {{ javascript_include('assets/global/plugins/datatables/media/js/jquery.dataTables.min.js') }}
 {{ javascript_include('assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js') }}
 {{ javascript_include('assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js') }}
@@ -198,9 +203,27 @@ var TableAdvanced = function () {
    });
       
    TableAdvanced.init();
-   
 
-         
+	$.ajax({
+      url: 'cmcategory/jsonlist',
+      data: {
+         format: 'json'
+      },
+      type: 'GET',
+      error: function() {
+         $('#correspondentList').html('<p>An error has occurred</p>');
+      },
+      success: function(data) {
+      	//var lists = JSON.parse(data);
+		var $selectElement = $("#correspondentCategory");								
+        
+        $(data).each(function(){
+    	var newOption = '<option value="' + this.categoryId + '">' + this.categoryName + '</option>';
+    	$selectElement.append(newOption);
+		});
+      }
+      
+   });   
 });
 </script>
 <!-- END JAVASCRIPTS -->

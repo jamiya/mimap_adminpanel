@@ -861,9 +861,9 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="row">
 									<div class="col-md-6">
 										<div class="btn-group">
-											<a id="sample_editable_1_new" class="btn green" data-toggle="modal" href="#basic">
+											<button id="sample_editable_1_new" class="btn green" data-toggle="modal" href="#basic" onclick="getCorrespondent()">
 											<i class="fa fa-plus"></i> Нэмэх
-											</a>
+											</button>
                                             <button id="sample_editable_1_new" class="btn blue">
 											<i class="fa fa-eye"></i> Харах
 											</button>
@@ -892,8 +892,8 @@ License: You must have a valid license purchased only from themeforest(the above
 							</tr>
 							</thead>
 							<tbody>						                                                           
-                                                           <?php foreach ($categories as $category) { ?>
-                                                            <tr class="treegrid-<?php echo $category['categoryId']; ?> <?php if ($category['parentId']) { ?> treegrid-parent-<?php echo $category['parentId']['categoryId']; ?> <?php } ?>">
+                                <?php foreach ($categories as $category) { ?>
+                                <tr class="treegrid-<?php echo $category['categoryId']; ?> <?php if ($category['parentId']) { ?> treegrid-parent-<?php echo $category['parentId']['categoryId']; ?> <?php } ?>">
 								<td>
 									<?php echo $category['categoryId']; ?>
 								</td>
@@ -1040,6 +1040,30 @@ License: You must have a valid license purchased only from themeforest(the above
   	})
   .done(function( msg ) {
     alert( "Data Saved: " + msg )});
+  		getCorrespondent();
+	}
+
+	function getCorrespondent () {
+		$.ajax({
+      	url: 'cmcategory/jsonlist',
+      	data: {
+         	format: 'json'
+      	},
+      	type: 'GET',
+      	error: function() {
+         	$('#correspondentList').html('<p>An error has occurred</p>');
+      	},
+      	success: function(data) {
+      		//var lists = JSON.parse(data);
+		var $selectElement = $("#correspondentCategory");								
+        
+        $(data).each(function(){
+    	var newOption = '<option value="' + this.categoryId + '">' + this.categoryName + '</option>';
+    	$selectElement.append(newOption);
+		});
+      }
+      
+   });
 	}
 
 
@@ -1126,26 +1150,7 @@ var TableAdvanced = function () {
       
    TableAdvanced.init();
 
-	$.ajax({
-      url: 'cmcategory/jsonlist',
-      data: {
-         format: 'json'
-      },
-      type: 'GET',
-      error: function() {
-         $('#correspondentList').html('<p>An error has occurred</p>');
-      },
-      success: function(data) {
-      	//var lists = JSON.parse(data);
-		var $selectElement = $("#correspondentCategory");								
-        
-        $(data).each(function(){
-    	var newOption = '<option value="' + this.categoryId + '">' + this.categoryName + '</option>';
-    	$selectElement.append(newOption);
-		});
-      }
-      
-   });   
+	   
 });
 </script>
 <!-- END JAVASCRIPTS -->

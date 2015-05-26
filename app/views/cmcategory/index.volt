@@ -29,9 +29,9 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="btn-group">
-											<a id="sample_editable_1_new" class="btn green" data-toggle="modal" href="#basic">
+											<button id="sample_editable_1_new" class="btn green" data-toggle="modal" href="#basic" onclick="getCorrespondent()">
 											<i class="fa fa-plus"></i> Нэмэх
-											</a>
+											</button>
                                             <button id="sample_editable_1_new" class="btn blue">
 											<i class="fa fa-eye"></i> Харах
 											</button>
@@ -60,8 +60,8 @@
 							</tr>
 							</thead>
 							<tbody>						                                                           
-                                                           {% for  category in categories %}
-                                                            <tr class="treegrid-{{category['categoryId']}} {% if category['parentId'] %} treegrid-parent-{{ category['parentId']['categoryId'] }} {% endif %}">
+                                {% for  category in categories %}
+                                <tr class="treegrid-{{category['categoryId']}} {% if category['parentId'] %} treegrid-parent-{{ category['parentId']['categoryId'] }} {% endif %}">
 								<td>
 									{{ category['categoryId'] }}
 								</td>
@@ -118,6 +118,30 @@
   	})
   .done(function( msg ) {
     alert( "Data Saved: " + msg )});
+  		getCorrespondent();
+	}
+
+	function getCorrespondent () {
+		$.ajax({
+      	url: 'cmcategory/jsonlist',
+      	data: {
+         	format: 'json'
+      	},
+      	type: 'GET',
+      	error: function() {
+         	$('#correspondentList').html('<p>An error has occurred</p>');
+      	},
+      	success: function(data) {
+      		//var lists = JSON.parse(data);
+		var $selectElement = $("#correspondentCategory");								
+        
+        $(data).each(function(){
+    	var newOption = '<option value="' + this.categoryId + '">' + this.categoryName + '</option>';
+    	$selectElement.append(newOption);
+		});
+      }
+      
+   });
 	}
 
 
@@ -204,26 +228,7 @@ var TableAdvanced = function () {
       
    TableAdvanced.init();
 
-	$.ajax({
-      url: 'cmcategory/jsonlist',
-      data: {
-         format: 'json'
-      },
-      type: 'GET',
-      error: function() {
-         $('#correspondentList').html('<p>An error has occurred</p>');
-      },
-      success: function(data) {
-      	//var lists = JSON.parse(data);
-		var $selectElement = $("#correspondentCategory");								
-        
-        $(data).each(function(){
-    	var newOption = '<option value="' + this.categoryId + '">' + this.categoryName + '</option>';
-    	$selectElement.append(newOption);
-		});
-      }
-      
-   });   
+	   
 });
 </script>
 <!-- END JAVASCRIPTS -->

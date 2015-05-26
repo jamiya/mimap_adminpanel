@@ -88,7 +88,7 @@
 				</div>
 			</div>
 			<!-- END PAGE CONTENT -->
-{% include 'cmcategory/add.volt'%}
+{% include 'cmcategory/popup.volt'%}
 
 {% endblock %} 
 

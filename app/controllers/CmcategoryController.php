@@ -34,38 +34,56 @@ class CmcategoryController extends ControllerBase
         
         
          if ($this->request->isPost()) {
-
-            $categoryName = trim($this->request->getPost('categoryName', array('string', 'striptags')));
-            $parentId = $this->request->getPost('parentId', 'num');
-            $isShowMenu = $this->request->getPost('isShowMenu', 'bool');
-
-            $categories = $this->service->get('/mimap/category/categories');
+             
+            $this->view->disable();
+        
+            $this->response->setContentType('text/html', 'UTF-8');
             
+            $categoryName = trim($this->request->getPost('categoryName', array('string', 'striptags')));
+           
+
+            $parentId = $this->request->getPost('parentId');
+            
+            $isShowMenu = $this->request->getPost('isShowMenu');
+                        
+            $categories = $this->service->get('/mimap/category/categories');
+                        
             foreach ($category as $categories){
                 
                 if(strcasecmp($categoryName,  trim($category['categoryName']))==0){
-                    $this->flash->error('Ийм нэртэй категори байна');
-                    return false;
+                    
+                  return $this->response->setContent("Ийм нэртэй категори байна");
                 }
               
             }
-            
+                        
             $cmCategory = new CmCategory();
-            
+            $cmCategory->setCategoryId("1000".time());
             $cmCategory->setCategoryName($categoryName);
-            $cmCategory->setParentId($parentId);
-            $cmCategory->setIsActive(1);
+            $cmCategory->setParentId(null);
+            $cmCategory->setIsActive(true);
             $cmCategory->setIsShowMenu($isShowMenu);
+            
+            
+            //return $this->response->setContent($cmCategory);
 
             if ($cmCategory->save() == false) {
-                              
-                foreach ($user->getMessages() as $message) {
-                    $this->flash->error((string) $message);
+                   
+               $error="error"; 
+               
+                foreach ($cmCategory->getMessages() as $message) {
+                    
+                    $error .= ' '.$message;
+                        //$this->flash->error((string) $message);
                 }
+                
+              return $this->response->setContent($error);
+                
             } else {
-                $this->flash->success('Thanks for sign-up, please log-in to start generating invoices');
-                return $this->forward('session/index');
+               // $this->flash->success('Thanks for sign-up, please log-in to start generating invoices');
+              return $this->response->setContent("Хадгаллаа");
             }
+            
         }
         
     }
@@ -112,7 +130,7 @@ class CmcategoryController extends ControllerBase
                 $category['categoryName'] = $prefix.$category['categoryName'];
                 array_push($categoriesTree,$category);
                 if($this->isParent($category['categoryId'],$categories)){
-                  $categoriesTree = $this->tree($categories, $categoriesTree, $category['categoryId'],$prefix.' ');
+                  $categoriesTree = $this->tree($categories, $categoriesTree, $category['categoryId'],$prefix."-");
                 }
             }
         }        

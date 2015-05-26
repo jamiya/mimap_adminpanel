@@ -790,33 +790,10 @@ License: You must have a valid license purchased only from themeforest(the above
 					</ul>
 				</li>
 				<li>
-					<a href="javascript:;">
+					<a href="company.html">
 					<i class="icon-wallet"></i>
 					<span class="title">Байгууллага</span>
-					<span class="arrow "></span>
 					</a>
-					<ul class="sub-menu">
-						<li>
-							<a href="portlet_general.html">
-							General Portlets</a>
-						</li>
-						<li>
-							<a href="portlet_general2.html">
-							<span class="badge badge-danger">new</span>New Portlets #1</a>
-						</li>
-						<li>
-							<a href="portlet_general3.html">
-							<span class="badge badge-danger">new</span>New Portlets #2</a>
-						</li>
-						<li>
-							<a href="portlet_ajax.html">
-							Ajax Portlets</a>
-						</li>
-						<li>
-							<a href="portlet_draggable.html">
-							Draggable Portlets</a>
-						</li>
-					</ul>
 				</li>
 				<li>
 					<a href="javascript:;">

@@ -17,15 +17,14 @@
 									<input type="text" id="categoryInput" class="form-control input-circle-right" placeholder=" Категори">
 										</div>
 									</div>
-									<div class="form-group">
-										<label>Харъяалагдах категори</label>
-										<select class="form-control" id="correspondentCategory">
-											<option value="parentId">Option 1</option>
-											<option>Option 2</option>
-											<option>Option 3</option>
-											<option>Option 4</option>
-											<option>Option 5</option>
-										</select>
+									<div class="form-group" id="correspondentList">
+										<label class=>Харъяалагдах категори</label>
+										<div>
+											<select class="form-control select2me" id="correspondentCategory" data-placeholder="Сонгох...">
+												
+											</select>
+											
+										</div>
 									</div>
 									<div class="form-group">
 										<div class="checkbox-list">

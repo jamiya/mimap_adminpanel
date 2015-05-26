@@ -6,7 +6,7 @@
 					<h4 class="modal-title">Байгууллагын категори</h4>
 			</div>
 			<div class="modal-body">
-				<form role="form" action="">
+				<form role="form">
 					<div class="form-body">
 									<div class="form-group">
 										<label>Категори</label>
@@ -14,13 +14,13 @@
 											<span class="input-group-addon input-circle-left">
 											<i class="fa fa-envelope"></i>
 											</span>
-											<input type="text" class="form-control input-circle-right" placeholder="Категори">
+									<input type="text" id="categoryInput" class="form-control input-circle-right" placeholder=" Категори">
 										</div>
 									</div>
 									<div class="form-group">
 										<label>Харъяалагдах категори</label>
-										<select class="form-control">
-											<option>Option 1</option>
+										<select class="form-control" id="correspondentCategory">
+											<option value="parentId">Option 1</option>
 											<option>Option 2</option>
 											<option>Option 3</option>
 											<option>Option 4</option>
@@ -30,13 +30,13 @@
 									<div class="form-group">
 										<div class="checkbox-list">
 											<label>
-											<input type="checkbox"> Хэрэглэгчийн хэсэгт харагдах эсэх </label>
+											<input type="checkbox" id="is_show_list"> Хэрэглэгчийн хэсэгт харагдах эсэх </label>
 										</div>
 									</div>
 					</div>
 					<div class="modal-footer form-actions">
 						<button type="button" class="btn default" data-dismiss="modal">Хаах</button>
-						<button type="submit" class="btn blue">Хадгалах</button>
+						<button type="button" class="btn blue" onclick="addCategory()">Хадгалах</button>
 					</div>
 				</form>
 			</div>

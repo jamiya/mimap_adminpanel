@@ -55,7 +55,7 @@ class SecurityPlugin extends Plugin
 
 			//Public area resources
 			$publicResources = array(
-                'cmcategory'   => array('index', 'jsonlist', 'json','tree', 'search', 'new', 'edit', 'save', 'create', 'delete'),
+                'cmcategory'   => array('index', 'jsonlist', 'json', 'add', 'tree', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'index'      => array('index'),
 				'about'      => array('index'),
 				'register'   => array('index'),

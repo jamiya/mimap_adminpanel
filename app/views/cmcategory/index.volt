@@ -104,6 +104,17 @@
 
 
 <script>
+	function addCategory(){
+		$.ajax({
+  		method: "POST",
+  		url: "cmcategory/add",
+  		data: { categoryName: $('#categoryInput').val(), parentId: $('#correspondentCategory').val(),
+  		isShowMenu:  $("#is_show_list").attr("checked") ? 1 : 0 }
+  	})
+  .done(function( msg ) {
+    alert( "Data Saved: " + msg )});
+	}
+
 
 var TableAdvanced = function () {
 

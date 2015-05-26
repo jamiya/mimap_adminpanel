@@ -31,21 +31,18 @@ class CmcategoryController extends ControllerBase
     
     
     public function addAction(){
-        
+   
+         $this->view->disable();
         
          if ($this->request->isPost()) {
              
-            $this->view->disable();
         
-            $this->response->setContentType('text/html', 'UTF-8');
+            $this->response->setContentType('application/json', 'UTF-8');
             
             $categoryName = trim($this->request->getPost('categoryName', array('string', 'striptags')));
            
-
             $parentId = $this->request->getPost('parentId');
-            
-           // return $this->response->setContent($parentId);
-            
+                    
             $isShowMenu = $this->request->getPost('isShowMenu');
                         
             $categories = $this->service->get('/mimap/cats/categories');

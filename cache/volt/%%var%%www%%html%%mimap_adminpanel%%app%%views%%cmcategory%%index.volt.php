@@ -1073,9 +1073,7 @@ var TableAdvanced = function () {
             //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
             //},
 
-            "order": [
-                [0, 'asc']
-            ],
+
             
             "lengthMenu": [
                 [5, 15, 20, -1],

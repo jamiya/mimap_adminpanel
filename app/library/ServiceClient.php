@@ -110,10 +110,10 @@ class ServiceClient {
             $request = $this->client->put($url, $params);
         } catch (ConnectException $e) {
             $this->showMessage($e->getMessage(), "ERROR");
-            return null;
+            return $e->getMessage();
         } catch (ServerException $e) {
             $this->showMessage($e->getMessage(), "ERROR");
-            return null;
+            return $e->getMessage();
         } catch (RequestException $e) {
             $request = $e->getResponse();
             $response = $request->json();
@@ -122,7 +122,7 @@ class ServiceClient {
             } else {
                 $this->showMessage($e->getMessage(), "WARNING");
             }
-            return null;
+            return $e->getMessage();
         }
         $response = $request->json();
         if (isset($response["message"]) && !empty($response["message"]["message"])) {

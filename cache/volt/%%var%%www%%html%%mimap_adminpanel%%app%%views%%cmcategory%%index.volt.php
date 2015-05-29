@@ -38,7 +38,18 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->stylesheetLink('assets/global/plugins/morris/morris.css'); ?>
 <!-- END PAGE LEVEL PLUGIN STYLES -->
 <!-- BEGIN PAGE STYLES -->
-<?php echo $this->tag->stylesheetLink('assets/admin/pages/css/tasks.css'); ?>
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css'); ?>
+    <?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css'); ?>
+    <?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css'); ?>
+    <?php echo $this->tag->stylesheetLink('assets/global/plugins/maxazan-jquery-treegrid/css/jquery.treegrid.css'); ?>
+    <?php echo $this->tag->stylesheetLink('assets/global/plugins/bootstrap-select/bootstrap-select.min.css'); ?>
+    <?php echo $this->tag->stylesheetLink('assets/global/plugins/select2/select2.css'); ?>
+    <?php echo $this->tag->stylesheetLink('assets/global/plugins/jquery-multi-select/css/multi-select.css'); ?>
+    <?php echo $this->tag->stylesheetLink('assets/global/css/components-rounded.css'); ?>
+    <!-- END PAGE LEVEL STYLES -->
+
 <!-- END PAGE STYLES -->
 <!-- BEGIN THEME STYLES -->
 <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
@@ -49,19 +60,9 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->stylesheetLink('assets/admin/layout4/css/custom.css'); ?>
 
 
-<!-- BEGIN PAGE LEVEL STYLES -->
-<?php echo $this->tag->stylesheetLink('assets/global/plugins/select2/select2.css'); ?>
-<?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css'); ?>
-<?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css'); ?>
-<?php echo $this->tag->stylesheetLink('assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css'); ?>
-<?php echo $this->tag->stylesheetLink('assets/global/plugins/maxazan-jquery-treegrid/css/jquery.treegrid.css'); ?>
-<?php echo $this->tag->stylesheetLink('assets/global/plugins/bootstrap-select/bootstrap-select.min.css'); ?>
-<?php echo $this->tag->stylesheetLink('assets/global/plugins/jquery-multi-select/css/multi-select.css'); ?>
-<!-- END PAGE LEVEL STYLES -->
-
 
 <!-- END THEME STYLES -->
-<link rel="shortcut icon" href="/invo/favicon.ico"/> 
+<link rel="shortcut icon" href="<?php echo $this->url->get('favicon.ico'); ?>"/> 
 
 
 </head>
@@ -520,7 +521,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
 			<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 			<ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-				<li>
+				<li <?php if ($this->router->getControllerName() == 'cmcategory' || $this->router->getControllerName() == 'cmservice') { ?>class="active open"<?php } ?> >
 					<a href="javascript:;">
 					<i class="icon-book-open"></i>
 					<span class="title">Лавлах</span>
@@ -532,13 +533,13 @@ License: You must have a valid license purchased only from themeforest(the above
 							<i class="icon-home"></i>
 							Байгууллагын төрөл</a>
 						</li>
-						<li>
-							<a href="cmcategory">
+						<li <?php if ($this->router->getControllerName() == 'cmcategory') { ?>class="active"<?php } ?> >
+							<a href="<?php echo $this->url->get('cmcategory'); ?>">
 							<i class="icon-basket"></i>
 							Байгууллагын категори</a>
 						</li>
-						<li>
-							<a href="ecommerce_orders_view.html">
+						<li <?php if ($this->router->getControllerName() == 'cmservice') { ?>class="active"<?php } ?>>
+							<a href="<?php echo $this->url->get('cmservice'); ?>">
 							<i class="icon-tag"></i>
 							Байгууллагын үйлчилгээ</a>
 						</li>
@@ -789,35 +790,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a href="javascript:;">
-					<i class="icon-wallet"></i>
-					<span class="title">Байгууллага</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li>
-							<a href="portlet_general.html">
-							General Portlets</a>
-						</li>
-						<li>
-							<a href="portlet_general2.html">
-							<span class="badge badge-danger">new</span>New Portlets #1</a>
-						</li>
-						<li>
-							<a href="portlet_general3.html">
-							<span class="badge badge-danger">new</span>New Portlets #2</a>
-						</li>
-						<li>
-							<a href="portlet_ajax.html">
-							Ajax Portlets</a>
-						</li>
-						<li>
-							<a href="portlet_draggable.html">
-							Draggable Portlets</a>
-						</li>
-					</ul>
-				</li>
+
 				<li>
 					<a href="javascript:;">
 					<i class="icon-bar-chart"></i>
@@ -843,131 +816,188 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- BEGIN CONTENT -->       
  	<div class="page-content-wrapper">
            <div class="page-content">
+             <div id="flashmessage">
+             </div>
              <?php echo $this->flash->output(); ?>
              
-			<!-- BEGIN PAGE CONTENT-->
-			<div class="row">
-				<div class="col-md-12">
-			<!-- END PAGE CONTENT-->
-					<!-- BEGIN EXAMPLE TABLE PORTLET-->
-					<div class="portlet box blue">
-						<div class="portlet-title">
-							<div class="caption">
-								<i class="fa fa-list-ol"></i>БАЙГУУЛЛАГЫН КАТЕГОРИ ЖАГСААЛТ
-							</div>
-						</div>
-						<div class="portlet-body">
-							<div class="table-toolbar">
-								<div class="row">
-									<div class="col-md-6">
-										<div class="btn-group">
-											<a id="sample_editable_1_new" class="btn green" data-toggle="modal" href="#basic">
-											<i class="fa fa-plus"></i> Нэмэх
-											</a>
-                                            <button id="sample_editable_1_new" class="btn blue">
-											<i class="fa fa-eye"></i> Харах
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<table class="table table-hover table-bordered tree" id="table_1">
-							<thead>
-							<tr>
-								<th>
-									 №
-								</th>
-								<th>
-                                                                        Байгууллагын категори
-								</th>
-								<th>
-									
-								</th>
-								<th>
-									 Засах
-								</th>
-								<th>
-									 Устгах
-								</th>
-							</tr>
-							</thead>
-							<tbody>						                                                           
-                                                           <?php foreach ($categories as $category) { ?>
-                                                            <tr class="treegrid-<?php echo $category['categoryId']; ?> <?php if ($category['parentId']) { ?> treegrid-parent-<?php echo $category['parentId']['categoryId']; ?> <?php } ?>">
-								<td>
-									<?php echo $category['categoryId']; ?>
-								</td>
-								<td>
-									<?php echo $category['categoryName']; ?>
-								</td>
-								<td class="center">
-								 <input type="checkbox">	
-								</td>
-								<td>
-									<a class="edit" href="javascript:;">
-									Засах </a>
-								</td>
-								<td>
-									<a class="delete" href="javascript:;">
-									Устгах </a>
-								</td>
-							</tr>                                                                
-                                                           <?php } ?>
+    <!-- BEGIN PAGE CONTENT-->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- END PAGE CONTENT-->
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-list-ol"></i>БАЙГУУЛЛАГЫН КАТЕГОРИ ЖАГСААЛТ
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="table-toolbar">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="btn-group">
+                                    <button id="sample_editable_1_new" class="btn green" data-toggle="modal" data-target="#modalAdd"  >
+                                        <i class="fa fa-plus"></i> Нэмэх
+                                    </button>
+                                    <button id="sample_editable_1_new" class="btn blue" data-toggle="modal" data-target="#modalCatServ" >
+                                        <i class="fa fa-eye" ></i> Харах
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-hover table-bordered tree" id="table_1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    №
+                                </th>
+                                <th>
+                                    Байгууллагын категори
+                                </th>
+                                <th>
+                                    Хэрэглэгчид харагдах 
+                                </th>
+                                <th colspan="2">
+                                    Үйлдэл
+                                </th>
 
-							</tbody>
-							</table>
-						</div>
-					</div>
-					<!-- END EXAMPLE TABLE PORTLET-->
-				</div>
-			</div>
-			<!-- END PAGE CONTENT -->
-<div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-					<h4 class="modal-title">Байгууллагын категори</h4>
-			</div>
-			<div class="modal-body">
-				<form role="form">
-					<div class="form-body">
-									<div class="form-group">
-										<label>Категори</label>
-										<div class="input-group">
-											<span class="input-group-addon input-circle-left">
-											<i class="fa fa-envelope"></i>
-											</span>
-									<input type="text" id="categoryInput" class="form-control input-circle-right" placeholder=" Категори">
-										</div>
-									</div>
-									<div class="form-group" id="correspondentList">
-										<label class=>Харъяалагдах категори</label>
-										<div>
-											<select class="form-control select2me" id="correspondentCategory" data-placeholder="Сонгох...">
-												
-											</select>
-											
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="checkbox-list">
-											<label>
-											<input type="checkbox" id="is_show_list"> Хэрэглэгчийн хэсэгт харагдах эсэх </label>
-										</div>
-									</div>
-					</div>
-					<div class="modal-footer form-actions">
-						<button type="button" class="btn default" data-dismiss="modal">Хаах</button>
-						<button type="button" class="btn blue" onclick="addCategory()">Хадгалах</button>
-					</div>
-				</form>
-			</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+                            </tr>
+                        </thead>
+                        <tbody id="catList">						                                                           
+                            <?php foreach ($categories as $index => $category) { ?>
+                                <tr class="treegrid-<?php echo $category['categoryId']; ?> <?php if ($category['parentId']) { ?> treegrid-parent-<?php echo $category['parentId']['categoryId']; ?> <?php } ?>"
+                                    id="<?php echo trim($category['categoryId']); ?>">
+                                    <td>
+                                        <?php echo $index + 1; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $category['categoryName']; ?>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-<?php if ($category['isShowMenu']) { ?>check-square-o<?php } else { ?>square-o<?php } ?>"></i>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" onclick="updateCat(<?php echo $category['categoryId']; ?>)" class="btn btn-sm green" alt="Засах">
+                                            <i class="fa fa-edit"></i></a>
+                                    </td>
+                                    <td>
+                                        <a  href="javascript:;" onclick="deleteConf(<?php echo $category['categoryId']; ?>)" class="btn btn-sm red" alt="Устгах">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>                                                                
+                            <?php } ?>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+    <!-- END PAGE CONTENT -->
+    <div class="modal" id="modalAdd" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Байгууллагын категори нэмэх</h4>
+            </div>
+            <div class="modal-body">
+                <div id="modalmessage"></div>
+
+                <form role="form" id="addform"  >
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label>Категори</label>
+                            <input type="text" name="categoryName" id="categoryName" class="form-control" placeholder=" Категори">
+                            </div>
+                        <div class="form-group" id="correspondentList">
+                            <label class=>Харъяалагдах категори</label>
+                            <select class="form-control select2me" name="parentId" id="parentId" data-placeholder="Сонгох...">
+
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label> Хэрэглэгчийн хэсэгт харагдах эсэх </label>
+                            <input name="isShowMenu" type="checkbox" id="isShowMenu" checked>
+                        </div>
+                    </div>
+                    <button type="button" class="btn default" data-dismiss="modal">Хаах</button>
+                    <button type="button" class="btn blue" onclick="addCategory()" >Хадгалах</button>
+                </form>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </div>
-							<!-- /.modal -->
+    <div class="modal" id="modalUpdate" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Байгууллагын категори засах</h4>
+            </div>
+            <div class="modal-body">
+                <div id="modalmessage"></div>
+
+                <form role="form" id="updateform" >
+                    <div class="form-body" id="updateformBody">
+                    </div>
+                    <button type="button" class="btn default" data-dismiss="modal">Хаах</button>
+                    <button type="button" class="btn blue" onclick="saveCat()" >Хадгалах</button>
+                </form>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+    <div class="modal" id="modalCatServ" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Байгууллагын категори үйл ажиллагаа</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-bordered tree" id="table_1">
+                    <thead>
+                        <tr>
+                            <th>
+                                №
+                            </th>
+                            <th>
+                                Үйл ажиллагааны чиглэл
+                            </th>
+                            <th>
+                                Категори 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="catservList">						                                                           
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn default" data-dismiss="modal">Хаах</button>
+            </div>
+        </div>
+        <!-- /.modal-dialog -->
+
+
+    </div>
+    <!-- /.modal -->
+</div>
 
 
 
@@ -1017,136 +1047,409 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->javascriptInclude('assets/admin/pages/scripts/tasks.js'); ?>
 
 
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/media/js/jquery.dataTables.min.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/maxazan-jquery-treegrid/js/jquery.treegrid.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/maxazan-jquery-treegrid/js/jquery.treegrid.bootstrap3.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/admin/pages/scripts/components-dropdowns.js'); ?>
 
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/bootstrap-select/bootstrap-select.min.js'); ?>    
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/select2/select2.min.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/admin/pages/scripts/components-dropdowns.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/media/js/jquery.dataTables.min.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/maxazan-jquery-treegrid/js/jquery.treegrid.js'); ?>
-<?php echo $this->tag->javascriptInclude('assets/global/plugins/maxazan-jquery-treegrid/js/jquery.treegrid.bootstrap3.js'); ?>
-
-
-<script>
-	function addCategory(){
-		$.ajax({
-  		method: "POST",
-  		url: "cmcategory/add",
-  		data: { categoryName: $('#categoryInput').val(), parentId: $('#correspondentCategory').val(),
-  		isShowMenu:  $("#is_show_list").attr("checked") ? 1 : 0 }
-  	})
-  .done(function( msg ) {
-    alert( "Data Saved: " + msg )});
-	}
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/bootstrap-select/bootstrap-select.min.js'); ?>  
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/select2/select2.min.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/bootbox/bootbox.min.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/jquery-validation/js/jquery.validate.min.js'); ?>
+    <?php echo $this->tag->javascriptInclude('assets/global/plugins/jquery-validation/js/localization/messages_mn.js'); ?>
 
 
-var TableAdvanced = function () {
+    <script>
 
-    var initTable1 = function () {
-        var table = $('#table_1');
+        var TableAdvanced = function () {
 
-        /* Table tools samples: https://www.datatables.net/release-datatables/extras/TableTools/ */
+            var initTable1 = function () {
+                var table = $('#table_1');
 
-
-        var oTable = table.dataTable({
-
-            // Internationalisation. For more info refer to http://datatables.net/manual/i18n
-            "language": {
-                "aria": {
-                    "sortAscending": ": activate to sort column ascending",
-                    "sortDescending": ": activate to sort column descending"
-                },
-                "emptyTable": "No data available in table",
-                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                "infoEmpty": "No entries found",
-                "infoFiltered": "(filtered1 from _MAX_ total entries)",
-                "lengthMenu": "Show _MENU_ entries",
-                "search": "Search:",
-                "zeroRecords": "No matching records found"
-            },
-
-            // Or you can use remote translation file
-            //"language": {
-            //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
-            //},
+                /* Table tools samples: https://www.datatables.net/release-datatables/extras/TableTools/ */
 
 
-            
-            "lengthMenu": [
-                [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per page values here
-            ],
-            // set the initial value
-            "pageLength": -1,
+                var oTable = table.dataTable({
+                    // Internationalisation. For more info refer to http://datatables.net/manual/i18n
+                    "language": {
+                        "aria": {
+                            "sortAscending": ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        },
+                        "emptyTable": "No data available in table",
+                        "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                        "infoEmpty": "No entries found",
+                        "infoFiltered": "(filtered1 from _MAX_ total entries)",
+                        "lengthMenu": "Show _MENU_ entries",
+                        "search": "Search:",
+                        "zeroRecords": "No matching records found"
+                    },
+                    // Or you can use remote translation file
+                    //"language": {
+                    //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
+                    //},
 
-            "dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+                    "order": [
+                        [0, 'asc']
+                    ],
+                    "lengthMenu": [
+                        [5, 15, 20, -1],
+                        [5, 15, 20, "All"] // change per page values here
+                    ],
+                    // set the initial value
+                    "pageLength": -1,
+                    "dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+
+                });
+
+                var tableWrapper = $('#table_1_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
+
+                tableWrapper.find('.dataTables_length select').select2(); // initialize select2 dropdown
+            };
+
+            return {
+                //main function to initiate the module
+                init: function () {
+
+                    if (!jQuery().dataTable) {
+                        return;
+                    }
+
+                    console.log('me 1');
+
+                    initTable1();
+
+                    console.log('me 2');
+                }
+
+            };
+
+        }();
+
+        jQuery(document).ready(function () {
+            Metronic.init(); // init metronic core componets
+            Layout.init(); // init layout
+
+            $('#table_1').treegrid({
+                treeColumn: 1,
+                'initialState': 'collapsed',
+                expanderExpandedClass: 'fa fa-minus-square-o',
+                expanderCollapsedClass: 'fa fa-plus-square-o'
+            });
+
+
+
+            // TableAdvanced.init();
+
 
         });
 
-        var tableWrapper = $('#table_1_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
+        function deleteConf(id) {
 
-        tableWrapper.find('.dataTables_length select').select2(); // initialize select2 dropdown
-    }
+            bootbox.confirm("Устгахуу?", function (result) {
+                if (result) {
+                    deleteReq(id, function (data) {
 
-    return {
+                        if (data.responseResultType == "SUCCESS") {
 
-        //main function to initiate the module
-        init: function () {
+                            flashMessage('success', 'Устлаа.');
+                            $('table#table_1  tr#' + id).remove();
 
-            if (!jQuery().dataTable) {
-                return;
-            }
+                        }
+                        else {
 
-            console.log('me 1');
+                            flashMessage('danger', 'Устгаж болохгүй мэдээлэл байна.');
+                        }
 
-            initTable1();
-
-            console.log('me 2');
+                    });
+                }
+            });
         }
 
-    };
+        function deleteReq(id, callback) {
 
-}();
+            $.ajax({
+                url: 'cmcategory/deleteajax/' + id,
+                type: 'GET',
+                success: callback
+            });
+
+        }
+
+        function flashMessage(type, message) {
+
+            $("#flashmessage").html('<div class="alert alert-' + type + '">' + message + '</div>');
+
+        }
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+    <script>
+    
+ function getAjax(url,callback){
+     
+    $.ajax({
+      	url: url,  
+       type: 'GET',    
+    success: callback
+     });
+     
+     
+ }
+ 
+ 
+  function postAjax(url,data,callback){
+     
+    $.ajax({
+           type: "POST",
+            url: url,
+           data: data, 
+        success: callback
+         });
+     
+     
+ }
+ 
+ function refreshParents(){
+     
+     getAjax('cmcategory/jsonlist',function(data) {
+                        
+       var $parentId = $("#modalAdd #parentId");     
+           $parentId.empty();
+           $parentId.append('<option value="" selected >Сонго</option>');
+           
+           $(data).each(function(){            
+              $parentId.append('<option value="' + this.categoryId + '">' + this.categoryName + '</option>');
+             }); 
+    });
+                        
+ }
+ function refreshCatServ(){
+     
+     getAjax('cmservice/catserv',function(data) {
+                        
+         $("#modalCatServ #catservList").html(data);
+         
+    });
+                        
+ }
+ 
+ 
+  $('#modalCatServ').on('show.bs.modal', function (e) {
+       refreshCatServ();
+ });
+ 
+
+    
+    
+ $('#modalAdd').on('show.bs.modal', function (e) {
+       refreshParents();
+ });
+ 
+ 
+
+ 
+  $('#modalAdd').on('hide.bs.modal', function (e) {
+       
+       $('#modalAdd #modalmessage').empty();
+       $('#modalAdd #categoryName').val('');
+       $('#modalAdd #isShowMenu').prop('checked', true);
+ });
+ 
+ 
+ 
+     var response;
+     
+    $.validator.addMethod(
+        "uniqueCategoryName", 
+        function(value, element) {
+            $.ajax({
+                type: "POST",
+                 url: "cmcategory/namexist",
+                data: "categoryName="+value,
+            dataType:"html",
+                success: function(data)
+                {
+                    response = ( data == "true" ) ? false : true;
+                }
+             });
+            return response;
+        },
+        "Ийм нэртэй категори байна."
+    );
+     
+ 
+   $("#addform").validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                
+                rules:{
+                categoryName:{
+                    required : true,
+                    uniqueCategoryName: true
+                      }
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                   $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                }
+    }); 
+    
+function modalMessage(type,message){
+       $("#modalAdd #modalmessage").html('<div class="alert alert-'+type+'">'+message+'</div>');
+}
+
+function updateModalMessage(type,message){
+       $("#modalUpdate #modalmessage").html('<div class="alert alert-'+type+'">'+message+'</div>');
+}
+    
+    
+function addCategory(){
+
+       if($("#addform").valid()){
+         
+              postAjax('cmcategory/add',$("#addform").serialize(),function(data) { 
+                 
+                 if(data.responseResultType=="SUCCESS"){
+                     
+                     modalMessage('success','Хадгаллаа');
+                     refreshList();
+                     
+                 }
+                 else{
+                     
+                     modalMessage('danger','Алдаа');
+                     
+                 }
+                  
+              // console.log(data); // show response from the php script.
+            });
+         } 
   
-   jQuery(document).ready(function() {    
-   Metronic.init(); // init metronic core componets
-   Layout.init(); // init layout
-   
-  $('#table_1').treegrid({
+}
+
+
+
+function refreshList(){
+    
+     getAjax('cmcategory/list',function(data) {
+                        
+        $("#catList").html(data);
+        
+          $('#table_1').treegrid({
        treeColumn: 1,
       'initialState': 'collapsed',
        expanderExpandedClass: 'fa fa-minus-square-o',
        expanderCollapsedClass: 'fa fa-plus-square-o'
    });
-      
-   TableAdvanced.init();
+    });
+    
+}
 
-	$.ajax({
-      url: 'cmcategory/jsonlist',
-      data: {
-         format: 'json'
-      },
-      type: 'GET',
-      error: function() {
-         $('#correspondentList').html('<p>An error has occurred</p>');
-      },
-      success: function(data) {
-      	//var lists = JSON.parse(data);
-		var $selectElement = $("#correspondentCategory");								
+
+  $.validator.addMethod(
+        "parentId", 
+        function(value, element) {
+            
+           return (value == $('#modalEdit #categoryId').val()) ? false : true;
+        },
+        "Өөрийгөө агуулж болохгүй"
+    );
+ 
+   $("#updateform").validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+        rules: {
+        categoryName: {
+            required : true
+        },    
+        parentId: {
+            parentId: true
+        }
+    },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                },
+
+                submitHandler: function (form) {
+                    success1.show();
+                    error1.hide();
+                }
+    }); 
+
+
+
+function updateCat(id){
+    
+     getAjax('cmcategory/update/'+id,function(data) {
+                        
+        $("#updateformBody").html(data);
         
-        $(data).each(function(){
-    	var newOption = '<option value="' + this.categoryId + '">' + this.categoryName + '</option>';
-    	$selectElement.append(newOption);
-		});
-      }
-      
-   });   
-});
+        $('#modalUpdate').modal('show');
+               
+    });
+        
+}
+    
+function saveCat(){
+    
+       if($("#updateform").valid()){
+         
+              postAjax('cmcategory/update',$("#updateform").serialize(),function(data) { 
+                 
+                 if(data.responseResultType=="SUCCESS"){
+                     
+                    $('#modalUpdate').modal('hide');
+                     flashMessage('success','Хадгаллаа');
+                     refreshList();
+                     
+                 }
+                 else{
+                     
+                     updateModalMessage('danger','Алдаа');
+                     
+                 }
+                                
+              // console.log(data); // show response from the php script.
+            });
+         }        
+}
+    
+
+
+
+
 </script>
-<!-- END JAVASCRIPTS -->
+
 
 
 </body>

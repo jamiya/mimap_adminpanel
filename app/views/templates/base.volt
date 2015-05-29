@@ -38,7 +38,8 @@ License: You must have a valid license purchased only from themeforest(the above
 {{ stylesheet_link('assets/global/plugins/morris/morris.css') }}
 <!-- END PAGE LEVEL PLUGIN STYLES -->
 <!-- BEGIN PAGE STYLES -->
-{{ stylesheet_link('assets/admin/pages/css/tasks.css') }}
+{% block css %}
+{% endblock %}
 <!-- END PAGE STYLES -->
 <!-- BEGIN THEME STYLES -->
 <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
@@ -48,11 +49,10 @@ License: You must have a valid license purchased only from themeforest(the above
 {{ stylesheet_link('assets/admin/layout4/css/themes/light.css') }}
 {{ stylesheet_link('assets/admin/layout4/css/custom.css') }}
 
-{% block css %}
-{% endblock %}
+
 
 <!-- END THEME STYLES -->
-<link rel="shortcut icon" href="/invo/favicon.ico"/> 
+<link rel="shortcut icon" href="{{url.get('favicon.ico')}}"/> 
 
 
 </head>
@@ -81,6 +81,8 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- BEGIN CONTENT -->       
  	<div class="page-content-wrapper">
            <div class="page-content">
+             <div id="flashmessage">
+             </div>
              {{ flash.output() }}
              {% block content %}
              {% endblock %}

@@ -55,8 +55,10 @@ class SecurityPlugin extends Plugin
 
 			//Public area resources
 			$publicResources = array(
-                              'cmcategory'   => array('index', 'jsonlist', 'json', 'add', 'tree', 'search', 'new', 'edit', 'save', 'create', 'delete'),
-				'index'      => array('index'),
+                            'cmcategory'   => array('index', 'jsonlist', 'namexist', 'list', 'json', 'add', 'tree', 'search', 'update', 'create', 'delete', 'deleteajax'),
+                                'cmservice'   => array('index', 'jsonlist', 'namexist', 'list', 'json', 'add', 'tree', 'search', 'update', 'create', 'delete', 'deleteajax','catserv'),
+                            'companies'   => array('index', 'jsonlist', 'namexist', 'list', 'json', 'add', 'tree', 'search', 'update', 'create', 'delete', 'deleteajax'),
+				'index'      => array('index'), 
 				'about'      => array('index'),
 				'register'   => array('index'),
 				'errors'     => array('show401', 'show404', 'show500'),

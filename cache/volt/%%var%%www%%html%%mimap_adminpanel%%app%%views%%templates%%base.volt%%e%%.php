@@ -1,4 +1,4 @@
-a:7:{i:0;s:2927:"<!DOCTYPE html>
+a:7:{i:0;s:2243:"<!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.2
 Version: 3.6.2
@@ -38,7 +38,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->stylesheetLink('assets/global/plugins/morris/morris.css'); ?>
 <!-- END PAGE LEVEL PLUGIN STYLES -->
 <!-- BEGIN PAGE STYLES -->
-<?php echo $this->tag->stylesheetLink('assets/admin/pages/css/tasks.css'); ?>
+";s:3:"css";a:1:{i:0;a:4:{s:4:"type";i:357;s:5:"value";s:1:"
+";s:4:"file";s:60:"/var/www/html/mimap_adminpanel/app/views/templates/base.volt";s:4:"line";i:42;}}i:1;s:26532:"
 <!-- END PAGE STYLES -->
 <!-- BEGIN THEME STYLES -->
 <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
@@ -48,11 +49,10 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->stylesheetLink('assets/admin/layout4/css/themes/light.css'); ?>
 <?php echo $this->tag->stylesheetLink('assets/admin/layout4/css/custom.css'); ?>
 
-";s:3:"css";a:1:{i:0;a:4:{s:4:"type";i:357;s:5:"value";s:1:"
-";s:4:"file";s:60:"/var/www/html/mimap_adminpanel/app/views/templates/base.volt";s:4:"line";i:52;}}i:1;s:26208:"
+
 
 <!-- END THEME STYLES -->
-<link rel="shortcut icon" href="/invo/favicon.ico"/> 
+<link rel="shortcut icon" href="<?php echo $this->url->get('favicon.ico'); ?>"/> 
 
 
 </head>
@@ -511,7 +511,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
 			<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 			<ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-				<li>
+				<li <?php if ($this->router->getControllerName() == 'cmcategory' || $this->router->getControllerName() == 'cmservice') { ?>class="active open"<?php } ?> >
 					<a href="javascript:;">
 					<i class="icon-book-open"></i>
 					<span class="title">Лавлах</span>
@@ -523,13 +523,13 @@ License: You must have a valid license purchased only from themeforest(the above
 							<i class="icon-home"></i>
 							Байгууллагын төрөл</a>
 						</li>
-						<li>
-							<a href="cmcategory">
+						<li <?php if ($this->router->getControllerName() == 'cmcategory') { ?>class="active"<?php } ?> >
+							<a href="<?php echo $this->url->get('cmcategory'); ?>">
 							<i class="icon-basket"></i>
 							Байгууллагын категори</a>
 						</li>
-						<li>
-							<a href="ecommerce_orders_view.html">
+						<li <?php if ($this->router->getControllerName() == 'cmservice') { ?>class="active"<?php } ?>>
+							<a href="<?php echo $this->url->get('cmservice'); ?>">
 							<i class="icon-tag"></i>
 							Байгууллагын үйлчилгээ</a>
 						</li>
@@ -780,35 +780,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a href="javascript:;">
-					<i class="icon-wallet"></i>
-					<span class="title">Байгууллага</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li>
-							<a href="portlet_general.html">
-							General Portlets</a>
-						</li>
-						<li>
-							<a href="portlet_general2.html">
-							<span class="badge badge-danger">new</span>New Portlets #1</a>
-						</li>
-						<li>
-							<a href="portlet_general3.html">
-							<span class="badge badge-danger">new</span>New Portlets #2</a>
-						</li>
-						<li>
-							<a href="portlet_ajax.html">
-							Ajax Portlets</a>
-						</li>
-						<li>
-							<a href="portlet_draggable.html">
-							Draggable Portlets</a>
-						</li>
-					</ul>
-				</li>
+
 				<li>
 					<a href="javascript:;">
 					<i class="icon-bar-chart"></i>
@@ -834,9 +806,11 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- BEGIN CONTENT -->       
  	<div class="page-content-wrapper">
            <div class="page-content">
+             <div id="flashmessage">
+             </div>
              <?php echo $this->flash->output(); ?>
              ";s:7:"content";a:1:{i:0;a:4:{s:4:"type";i:357;s:5:"value";s:14:"
-             ";s:4:"file";s:60:"/var/www/html/mimap_adminpanel/app/views/templates/base.volt";s:4:"line";i:86;}}i:2;s:2632:"
+             ";s:4:"file";s:60:"/var/www/html/mimap_adminpanel/app/views/templates/base.volt";s:4:"line";i:88;}}i:2;s:2632:"
            </div>
 	</div>
 	<!-- END CONTENT -->
@@ -883,7 +857,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->tag->javascriptInclude('assets/admin/pages/scripts/tasks.js'); ?>
 
 ";s:2:"js";a:1:{i:0;a:4:{s:4:"type";i:357;s:5:"value";s:1:"
-";s:4:"file";s:60:"/var/www/html/mimap_adminpanel/app/views/templates/base.volt";s:4:"line";i:133;}}i:3;s:35:"
+";s:4:"file";s:60:"/var/www/html/mimap_adminpanel/app/views/templates/base.volt";s:4:"line";i:135;}}i:3;s:35:"
 
 </body>
 <!-- END BODY -->

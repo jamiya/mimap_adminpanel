@@ -1,181 +1,213 @@
 <?php
 
-use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class CompaniesController extends ControllerBase
 {
-    public function initialize()
-    {
-        $this->tag->setTitle('Manage your companies');
+
+    public function initialize() {
+        $this->tag->setTitle('Company');
         parent::initialize();
     }
 
-    /**
-     * Shows the index action
-     */
-    public function indexAction()
-    {
-        $this->session->conditions = null;
-        $this->view->form = new CompaniesForm;
+    public function indexAction() {
+        $this->view->services = $this->service->get('/mimap/services/details');
+
+        $categories = $this->service->get('/mimap/cats/categories');
+        $this->view->categories = $this->tree($categories['data'], array(), null, "", "&nbsp;&nbsp;&nbsp;&nbsp;");
     }
 
-    /**
-     * Search companies based on current criteria
-     */
-    public function searchAction()
+    public function listAction() {
+        $this->view->services = $this->service->get('/mimap/services/details');
+    }
+    
+    
+    public function catservAction()
     {
-        $numberPage = 1;
+        $this->view->services = $this->service->get('/mimap/services/details');
+    }    
+
+    public function namexistAction() {
+
+        $services = $this->service->get('/mimap/services/details');
+
+        $serviceName = trim($this->request->getPost('serviceName', array('string', 'striptags')));
+
+        foreach ($services as $service) {
+
+            if (strcasecmp($serviceName, trim($service['serviceListName'])) == 0) {
+
+                return $this->response->setContent("true");
+            }
+        }
+
+        return $this->response->setContent("false");
+    }
+
+    public function jsonListAction() {
+
+        $this->view->disable();
+
+        $this->response->setContentType('application/json', 'UTF-8');
+
+        $categories = $this->service->get('/mimap/cats/categories');
+
+        $treeList = $this->tree($categories['data'], array(), null, '', "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+        return $this->response->setContent(json_encode($treeList));
+    }
+
+    public function addAction() {
+
+
+//         $categories = $this->service->get('/mimap/cats/categories');
+//       
+//         $treeList = $this->tree($categories['data'], array(), null, '','&nbsp;&nbsp;&nbsp;&nbsp;');
+//   
+//         $this->view->categories = $treeList;
+
+
         if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, "Companies", $this->request->getPost());
-            $this->persistent->searchParams = $query->getParams();
+
+
+            $serviceListName = trim($this->request->getPost('serviceListName', array('string', 'striptags')));
+
+            $categoryId = $this->request->getPost('categoryId');
+
+            $params = array("serviceListName" => $serviceListName);
+
+            foreach ($categoryId as $lol) {
+                $params['categories'][] = array("categoryId" => $lol);
+            }
+
+            $options = array(
+                'headers' => array('Content-type' => 'application/json'),
+                'body' => json_encode($params)
+            );
+
+            $response = $this->service->put("/mimap/services/insert", $options);
+
+            $this->view->disable();
+            $this->response->setContentType('application/json', 'UTF-8');
+            return $this->response->setContent(json_encode($response));
+        }
+    }
+
+    public function deleteAction($id) {
+        // $this->service->delete('/mimap/cats/delete/'. $id);
+        $this->service->delete('/mimap/services/delete?id' . $id);
+
+        $this->response->redirect("/cmcategory");
+
+        $this->view->disable();
+
+        return;
+    }
+
+    public function deleteajaxAction($id) {
+
+        $response = $this->service->delete('/mimap/services/delete/?id='.$id);
+
+        $this->view->disable(); 
+
+        $this->response->setContentType('application/json', 'UTF-8');
+
+        return $this->response->setContent(json_encode($response));
+
+        // return $this->response->setContent(json_encode(array('type'=>'danger','message'=>$response)));  
+    }
+
+    public function updateAction($id) {
+
+        if ($this->request->isPost()) {
+
+            $id = $this->request->getPost('categoryId');
+            $serviceListName = trim($this->request->getPost('serviceListName', array('string', 'striptags')));
+
+            $categoryId = $this->request->getPost('categoryId');
+
+            $isShowMenu = ($this->request->getPost("isShowMenu") == "on") ? true : false;
+
+
+            $params = array("categoryId" => trim($id),
+                "serviceListName" => $serviceListName,
+                "categoryId" => ($categoryId) ? $categoryId : null,
+                "isShowMenu" => $isShowMenu,
+                "isActive" => true,
+                "icon" => null,
+                "orderView" => null
+            );
+
+            $options = array(
+                'headers' => array('Content-type' => 'application/json'),
+                'body' => json_encode($params)
+            );
+
+            $response = $this->service->post("/mimap/cats/update", $options);
+
+            $this->view->disable();
+            $this->response->setContentType('application/json', 'UTF-8');
+            return $this->response->setContent(json_encode($response));
         } else {
-            $numberPage = $this->request->getQuery("page", "int");
-        }
 
-        $parameters = array();
-        if ($this->persistent->searchParams) {
-            $parameters = $this->persistent->searchParams;
-        }
+            $categories = $this->service->get('/mimap/cats/categories');
 
-        $companies = Companies::find($parameters);
-        if (count($companies) == 0) {
-            $this->flash->notice("The search did not find any companies");
-            return $this->forward("companies/index");
-        }
+            $treeList = $this->tree($categories['data'], array(), null, '', '&nbsp;&nbsp;&nbsp;&nbsp;');
+            $this->view->categories = $treeList;
 
-        $paginator = new Paginator(array(
-            "data"  => $companies,
-            "limit" => 10,
-            "page"  => $numberPage
-        ));
-
-        $this->view->page = $paginator->getPaginate();
-        $this->view->companies = $companies;
-    }
-
-    /**
-     * Shows the form to create a new company
-     */
-    public function newAction()
-    {
-        $this->view->form = new CompaniesForm(null, array('edit' => true));
-    }
-
-    /**
-     * Edits a company based on its id
-     */
-    public function editAction($id)
-    {
-
-        if (!$this->request->isPost()) {
-
-            $company = Companies::findFirstById($id);
-            if (!$company) {
-                $this->flash->error("Company was not found");
-                return $this->forward("companies/index");
-            }
-
-            $this->view->form = new CompaniesForm($company, array('edit' => true));
+            $this->view->category = $this->service->get('/mimap/cats/categorybyid?id=' . $id);
         }
     }
 
-    /**
-     * Creates a new company
-     */
-    public function createAction()
-    {
-        if (!$this->request->isPost()) {
-            return $this->forward("companies/index");
-        }
-
-        $form = new CompaniesForm;
-        $company = new Companies();
-
-        $data = $this->request->getPost();
-        if (!$form->isValid($data, $company)) {
-            foreach ($form->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            return $this->forward('companies/new');
-        }
-
-        if ($company->save() == false) {
-            foreach ($company->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            return $this->forward('companies/new');
-        }
-
-        $form->clear();
-
-        $this->flash->success("Company was created successfully");
-        return $this->forward("companies/index");
+    public function treeAction() {
+        
     }
 
-    /**
-     * Saves current company in screen
-     *
-     * @param string $id
-     */
-    public function saveAction()
-    {
-        if (!$this->request->isPost()) {
-            return $this->forward("companies/index");
+    public function jsonAction() {
+
+        $records = array();
+        $records['nodes'] = array();
+
+        $id = isset($_REQUEST['id']) ? $_REQUEST['id'] : '0';
+        $level = 1;
+        if ($id != '0') {
+            $id = explode(':', $id);
+            $level = $id[1] + 1;
         }
 
-        $id = $this->request->getPost("id", "int");
-        $company = Companies::findFirstById($id);
-        if (!$company) {
-            $this->flash->error("Company does not exist");
-            return $this->forward("companies/index");
+        for ($i = 1; $i < 6; $i++) {
+            $id_ = time() + rand(1000, 20000) . ':' . ($level);
+            $records['nodes'][] = array('id' => $id_, 'parent' => $id, 'name' => 'Node - ' . $level . ' - ' . $i, 'level' => $level, 'type' => 'folder');
         }
 
-        $form = new CompaniesForm;
 
-        $data = $this->request->getPost();
-        if (!$form->isValid($data, $company)) {
-            foreach ($form->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            return $this->forward('companies/new');
-        }
+        $this->view->disable();
 
-        if ($company->save() == false) {
-            foreach ($company->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            return $this->forward('companies/new');
-        }
+        $this->response->setContentType('application/json', 'UTF-8');
 
-        $form->clear();
-
-        $this->flash->success("Company was updated successfully");
-        return $this->forward("companies/index");
+        return $this->response->setContent(json_encode($records));
     }
 
-    /**
-     * Deletes a company
-     *
-     * @param string $id
-     */
-    public function deleteAction($id)
-    {
+    private function tree($categories, $categoriesTree, $parentId, $prefix, $prefix2) {
 
-        $companies = Companies::findFirstById($id);
-        if (!$companies) {
-            $this->flash->error("Company was not found");
-            return $this->forward("companies/index");
-        }
-
-        if (!$companies->delete()) {
-            foreach ($companies->getMessages() as $message) {
-                $this->flash->error($message);
+        foreach ($categories as $category) {
+            if ($category['parentId']['categoryId'] == $parentId) {
+                $category['categoryName'] = $prefix . $category['categoryName'];
+                array_push($categoriesTree, $category);
+                if ($this->isParent($category['categoryId'], $categories)) {
+                    $categoriesTree = $this->tree($categories, $categoriesTree, $category['categoryId'], $prefix . $prefix2, $prefix2);
+                }
             }
-            return $this->forward("companies/search");
         }
-
-        $this->flash->success("Company was deleted");
-        return $this->forward("companies/index");
+        return $categoriesTree;
     }
+
+    private function isParent($id, $categories) {
+        foreach ($categories as $category) {
+            if ($category['categoryId']['categoryId'] == $id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
